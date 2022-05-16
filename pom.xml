@@ -17,11 +17,13 @@
         <module>gateway</module>
         <module>eureka-server</module>
         <module>data-center</module>
+        <module>exposed-api</module>
     </modules>
 
     <groupId>com.demo</groupId>
     <artifactId>record-log</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <name>record-log</name>
     <description>record-log</description>
 
