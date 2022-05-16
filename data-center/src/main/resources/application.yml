@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: data-center
+server:
+  port: 10011
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:32000/eureka/
