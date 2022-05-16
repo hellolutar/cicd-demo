@@ -7,3 +7,13 @@ eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:32000/eureka/
+logging:
+  charset:
+    file: UTF-8
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
+      max-file-size: 20MB
+      max-history: 30
+  file:
+    name: logs/@artifactId@_@version@.log
