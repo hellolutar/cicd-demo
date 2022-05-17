@@ -4,8 +4,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: ${ENV_CONTAINER_NAME}
-    container_name: ${ENV_IMAGE}
+    image: ${ENV_IMAGE}:${ENV_IMAGE_TAG}
+    container_name: ${ENV_CONTAINER_NAME}
     restart: always
     ports:
       - "${ENV_EXPOSE_PORT}:${ENV_INNER_PORT}"
