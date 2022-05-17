@@ -8,7 +8,9 @@ echo 'volume).'
 #开启详细日志输出
 set -x
 #需要先切换到pom文件所在目录
- mvn  jar:jar install:install help:evaluate "-Dexpression=project.name -Dmaven.test.skip=true -Dfile.encoding=UTF-8"
+ mvn clean package
+ mvn compile
+ mvn jar:jar install:install help:evaluate "-Dexpression=project.name -Dmaven.test.skip=true -Dfile.encoding=UTF-8"
 #关闭详细日志输出
 set +x
 
