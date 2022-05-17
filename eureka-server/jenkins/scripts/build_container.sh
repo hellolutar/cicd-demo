@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
-DOCKER_OUTER_PORT=$(cat .env | grep ENV_EXPOSE_PORT | awk -F= '{print $2}')
-DOCKER_SERVICE_ID=$(docker ps -a | grep $DOCKER_OUTER_PORT | awk {'print $1'})
-DOCKER_IMAGE_NAME=$(docker ps -a | grep $DOCKER_OUTER_PORT | awk {'print $2'})
+
+ENV_CONTAINER_NAME=eureka-server
+DOCKER_SERVICE_ID=$(docker ps -a | grep $ENV_CONTAINER_NAME | awk '{print $1}')
+DOCKER_IMAGE_NAME=$(docker ps -a | grep $ENV_CONTAINER_NAME | awk '{print $2}')
 
 function stopAndRemoveDokcerService() {
   if [ -n "$DOCKER_SERVICE_ID" ]; then
-    echo -e "service[$DOCKER_SERVICE_ID] exist, stoping... \n"
+    echo -e "service[$DOCKER_IMAGE_NAME] exist, stoping... \n"
     docker stop $DOCKER_SERVICE_ID
 
-    echo -e "service[$DOCKER_SERVICE_ID] exist, removing... \n"
+    echo -e "service[$DOCKER_IMAGE_NAME] exist, removing... \n"
     docker rm $DOCKER_SERVICE_ID
 
   else
-    echo -e "service[$DOCKER_SERVICE_ID] not exist, skiping...\n"
+    echo -e "service[$ENV_CONTAINER_NAME] not exist, skiping...\n"
   fi
 }
 
