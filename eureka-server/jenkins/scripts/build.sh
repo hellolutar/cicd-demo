@@ -10,7 +10,7 @@ set -x
 #需要先切换到pom文件所在目录
  mvn clean package
  mvn compile
- mvn jar:jar install:install help:evaluate "-Dexpression=project.name -Dmaven.test.skip=true -Dfile.encoding=UTF-8"
+ mvn install help:evaluate "-Dexpression=project.name -Dmaven.test.skip=true -Dfile.encoding=UTF-8"
 #关闭详细日志输出
 set +x
 
@@ -29,12 +29,3 @@ set +x
 echo 'The following command runs and outputs the execution of your Java'
 echo 'application (which Jenkins built using Maven) to the Jenkins UI.'
 set -x
-
-#APPLICATION_LOG_PATH=/var/log/cicd_applications
-#if [ ! -d "$APPLICATION_LOG_PATH" ]; then
-#  mkdir $APPLICATION_LOG_PATH
-#fi
-#
-#nohup java -jar target/${NAME}-${VERSION}.jar > $APPLICATION_LOG_PATH/$NAME-$NOW_STR.log 2>&1 &
-
-
