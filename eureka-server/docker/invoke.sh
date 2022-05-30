@@ -34,7 +34,7 @@ function dockerLogin() {
   docker logout
   docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWD $DOCKER_REPO_URI
 
-  if [ $(echo $?) -gt 0 ]; then
+  if [ $(echo $?) -eq 0 ]; then
     echo "docker login SUCCESS"
     return 0
   else
