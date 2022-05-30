@@ -95,11 +95,12 @@ function runContainer() {
 }
 
 function main() {
+  IMAGE_NAME_LOWERCASE=$(echo "$NAME-$VERSION" | tr 'A-Z' 'a-z')
   generateDockerfile
   dockerLogin
-  buildImage $NAME-$VERSION
-  pushImageToRepo $NAME-$VERSION
-  runContainer $NAME-$VERSION
+  buildImage $IMAGE_NAME_LOWERCASE
+  pushImageToRepo $IMAGE_NAME_LOWERCASE
+  runContainer $IMAGE_NAME_LOWERCASE
 }
 
 main
