@@ -75,6 +75,16 @@ function pushImageToRepo() {
 
 }
 
+#停止容器
+function stopContainer() {
+  KEY_WORD=$1
+  echo "remove image of docker "
+  CONTAINER_ID=$(docker images | grep $KEY_WORD | awk '{print $3}')
+  docker stop $CONTAINER_ID
+  docker rm $CONTAINER_ID
+
+}
+
 # 运行docker容器
 function runContainer() {
   DOCKER_IMAGE=$1
@@ -83,7 +93,7 @@ function runContainer() {
   docker pull $DOCKER_IMAGE
 
   echo "docker run image ..."
-  docker run $DOCKER_IMAGE --name $NAME -p $PORT_MAPPING -v $VOLUME_MAPPING
+  docker run --name $NAME -p $PORT_MAPPING -v $VOLUME_MAPPING $DOCKER_IMAGE
 
   if [ $(echo $?) -eq 0 ]; then
     echo "run image of docker to repo  SUCCESS"
@@ -94,12 +104,14 @@ function runContainer() {
   fi
 }
 
+#主函数
 function main() {
-  IMAGE_NAME_LOWERCASE=$(echo "$DOCKER_REPO_URI/$NAME-$VERSION" | tr 'A-Z' 'a-z')
+  IMAGE_NAME_LOWERCASE=$(echo "$DOCKER_REPO_URI/$NAME:$VERSION" | tr 'A-Z' 'a-z')
   generateDockerfile
   dockerLogin
   buildImage $IMAGE_NAME_LOWERCASE
-  pushImageToRepo $IMAGE_NAME_LOWERCASE
+  pushImageToRepo $(echo "$DOCKER_REPO_URI/$NAME" | tr 'A-Z' 'a-z')
+  stopContainer $DOCKER_REPO_URI/$NAME
   runContainer $IMAGE_NAME_LOWERCASE
 }
 
