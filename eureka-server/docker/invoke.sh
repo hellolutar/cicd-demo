@@ -76,13 +76,18 @@ function pushImageToRepo() {
 }
 
 #停止容器
-function stopContainer() {
+function stopAndRmContainer() {
   KEY_WORD=$1
   echo "remove image of docker "
   CONTAINER_ID=$(docker images | grep $KEY_WORD | awk '{print $3}')
   docker stop $CONTAINER_ID
   docker rm $CONTAINER_ID
+}
 
+function rmImage() {
+    IMAGE_NAME=$1
+    echo "remove image of docker"
+    docker rmi $IMAGE_NAME
 }
 
 # 运行docker容器
@@ -111,7 +116,8 @@ function main() {
   dockerLogin
   buildImage $IMAGE_NAME_LOWERCASE
   pushImageToRepo $(echo "$DOCKER_REPO_URI/$NAME" | tr 'A-Z' 'a-z')
-  stopContainer $DOCKER_REPO_URI/$NAME
+  stopAndRmContainer $DOCKER_REPO_URI/$NAME
+  rmImage $IMAGE_NAME_LOWERCASE
   runContainer $IMAGE_NAME_LOWERCASE
 }
 
