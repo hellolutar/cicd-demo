@@ -1,48 +1,59 @@
 #!/usr/bin/env bash
 
-NAME=` mvn  help:evaluate "-Dexpression=project.name" | grep "^[^\[]"`
-VERSION=` mvn  help:evaluate -Dexpression=project.version | grep "^[^\[]"`
-
+#######################################自定义变量
+JAR_PORT=32000
+DOCKER_REPO_URI=172.25.112.27:31001
+DOCKER_USERNAME=dev_user
+DOCKER_PASSWD=dev_user
+NAME=$(mvn help:evaluate "-Dexpression=project.name" | grep "^[^\[]")
+VERSION=$(mvn help:evaluate -Dexpression=project.version | grep "^[^\[]")
+PORT_MAPPING="$JAR_PORT:$JAR_PORT"
+VOLUME_MAPPING="/var/log/$NAME:/opt/app/logs"
+#######################################自定义变量end
 
 #生成Dockerfile文件
 function generateDockerfile() {
-  JAR_NAME=$1
+  cat >>docker/Dockerfile <- EOF
+  FROM openjdk:8u332-jre
+  RUN mkdir /opt/app
+  ADD target/$NAME-$VERSION /opt/app/app.jar
+  WORKDIR /opt/app
+  CMD ["java", "-jar", "/opt/app/app.jar"]
+  VOLUME /opt/app/logs
+  EXPOSE $JAR_PORT
+  EOF
 
-cat >> docker/Dockerfile <- EOF
-FROM openjdk:8u332-jre
-RUN mkdir /opt/app
-ADD target/$JAR_NAME /opt/app/app.jar
-WORKDIR /opt/app
-CMD ["java", "-jar", "/opt/app/app.jar"]
-VOLUME /opt/app/logs
-EXPOSE 32000
-EOF
+}
 
+function dockerLogin() {
+  docker logout
+  docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWD $DOCKER_REPO_URI
 }
 
 ## 构建docker镜像
 function buildImage() {
-   echo "bui image ..."
-    DOCKER_DIR=$1
-    if [ -z "$DOCKER_DIR" ]; then
-        echo "buildImage() param1 DOCKER_DIR is empty!"
-        return 1;
-    fi
+  DOCKER_IMAGE=$1
+  echo "build image ..."
+  docker build -t $DOCKER_IMAGE -f Dockerfile
 
 }
 
 ## 推送docker镜像到仓库
 function pushImageToRepo() {
-    echo "pushing image ..."
+  DOCKER_IMAGE=$1
+  echo "pushing image ..."
+  dockerLogin
+  docker push $DOCKER_IMAGE
 
 }
 
+# 运行docker容器
 function runContainer() {
-    echo "pulling image ..."
+  DOCKER_IMAGE=$1
+  echo "pulling image ..."
+  dockerLogin
+  docker pull $DOCKER_IMAGE
 
-
+  echo "docker run image ..."
+  docker run $DOCKER_IMAGE --name $NAME -p $PORT_MAPPING -v $VOLUME_MAPPING
 }
-
-
-
-
