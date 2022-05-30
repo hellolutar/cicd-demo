@@ -9,7 +9,9 @@ pipeline {
 
         stage('deploy_with_docker') {
             steps {
-                sh ''' echo $pwd
+                sh '''
+                 cd eureka-server
+                 echo $pwd
                  bash jenkins/build.sh
                  source docker/invoke.sh
                  main'''
