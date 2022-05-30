@@ -38,7 +38,7 @@ function dockerLogin() {
     echo "docker login SUCCESS"
   else
     echo "docker login FAILD"
-    return 1
+    exit 1
   fi
 }
 
@@ -52,7 +52,7 @@ function buildImage() {
     echo "build docker image SUCCESS"
   else
     echo "build docker image FAILD"
-    return 1
+    exit 1
   fi
 }
 
@@ -67,7 +67,7 @@ function pushImageToRepo() {
     echo "push image of docker to repo  SUCCESS"
   else
     echo "push image of docker to repo FAILD"
-    return 1
+    exit 1
   fi
 
 }
@@ -86,7 +86,7 @@ function runContainer() {
     echo "run image of docker to repo  SUCCESS"
   else
     echo "run image of docker to repo FAILD"
-    return 1
+    exit 1
   fi
 }
 
