@@ -13,7 +13,7 @@ VOLUME_MAPPING="/var/log/$NAME:/opt/app/logs"
 
 #生成Dockerfile文件
 function generateDockerfile() {
-  cat >>docker/Dockerfile <- EOF
+  cat >>Dockerfile <- EOF
   FROM openjdk:8u332-jre
   RUN mkdir /opt/app
   ADD target/$NAME-$VERSION /opt/app/app.jar
