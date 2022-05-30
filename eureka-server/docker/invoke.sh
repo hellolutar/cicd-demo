@@ -98,7 +98,7 @@ function runContainer() {
   docker pull $DOCKER_IMAGE
 
   echo "docker run image ..."
-  docker run --name $NAME -p $PORT_MAPPING -v $VOLUME_MAPPING $DOCKER_IMAGE
+  docker run -d --name $NAME -p $PORT_MAPPING -v $VOLUME_MAPPING $DOCKER_IMAGE
 
   if [ $(echo $?) -eq 0 ]; then
     echo "run image of docker to repo  SUCCESS"
