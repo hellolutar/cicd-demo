@@ -16,7 +16,7 @@ function generateDockerfile() {
   cat >>Dockerfile <- EOF
   FROM openjdk:8u332-jre
   RUN mkdir /opt/app
-  ADD target/$NAME-$VERSION /opt/app/app.jar
+  ADD target/$NAME-$VERSION.jar /opt/app/app.jar
   WORKDIR /opt/app
   CMD ["java", "-jar", "/opt/app/app.jar"]
   VOLUME /opt/app/logs
@@ -34,7 +34,7 @@ function dockerLogin() {
 function buildImage() {
   DOCKER_IMAGE=$1
   echo "build image ..."
-  docker build -t $DOCKER_IMAGE -f Dockerfile
+  docker build -t $DOCKER_IMAGE -f docker/Dockerfile
 
 }
 
@@ -56,4 +56,11 @@ function runContainer() {
 
   echo "docker run image ..."
   docker run $DOCKER_IMAGE --name $NAME -p $PORT_MAPPING -v $VOLUME_MAPPING
+}
+
+function main() {
+    generateDockerfile
+    buildImage $NAME-$VERSION
+    pushImageToRepo $NAME-$VERSION
+    runContainer $NAME-$VERSION
 }

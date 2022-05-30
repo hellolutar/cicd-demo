@@ -10,7 +10,8 @@ pipeline {
         stage('deploy_with_docker') {
             steps {
                 sh ''' bash jenkins/build.sh
-                 bash docker/invoke.sh'''
+                 source docker/invoke.sh
+                 main'''
             }
         }
 
