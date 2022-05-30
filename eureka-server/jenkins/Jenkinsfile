@@ -13,7 +13,7 @@ pipeline {
                  cd eureka-server
                  echo $pwd
                  bash jenkins/build.sh
-                 docker/invoke.sh'''
+                 bash docker/invoke.sh'''
             }
         }
 
