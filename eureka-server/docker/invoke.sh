@@ -116,7 +116,7 @@ function main() {
   dockerLogin
   buildImage $IMAGE_NAME_LOWERCASE
   pushImageToRepo $IMAGE_NAME_LOWERCASE
-  stopAndRmContainer $(echo "$DOCKER_REPO_URI/$NAME" | tr 'A-Z' 'a-z')
+  stopAndRmContainer $(echo "$NAME" | tr 'A-Z' 'a-z')
   rmImage $IMAGE_NAME_LOWERCASE
   runContainer $IMAGE_NAME_LOWERCASE
 }
