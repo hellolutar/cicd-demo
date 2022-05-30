@@ -79,7 +79,7 @@ function pushImageToRepo() {
 function stopAndRmContainer() {
   KEY_WORD=$1
   echo "remove image of docker "
-  CONTAINER_ID=$(docker ps -a | grep $KEY_WORD | awk '{print $3}')
+  CONTAINER_ID=$(docker ps -a | grep $KEY_WORD | awk '{print $1}')
   docker stop $CONTAINER_ID
   docker rm $CONTAINER_ID
 }
