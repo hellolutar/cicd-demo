@@ -47,7 +47,7 @@ function dockerLogin() {
 function buildImage() {
   DOCKER_IMAGE=$1
   echo "build image ..."
-  docker build -t $DOCKER_IMAGE -f docker/Dockerfile
+  docker build -t $DOCKER_IMAGE -f docker/Dockerfile .
 
   if [ $(echo $?) -eq 0 ]; then
     echo "build docker image SUCCESS"
@@ -95,7 +95,7 @@ function runContainer() {
 }
 
 function main() {
-  IMAGE_NAME_LOWERCASE=$(echo "$NAME-$VERSION" | tr 'A-Z' 'a-z')
+  IMAGE_NAME_LOWERCASE=$(echo "$DOCKER_REPO_URI/$NAME-$VERSION" | tr 'A-Z' 'a-z')
   generateDockerfile
   dockerLogin
   buildImage $IMAGE_NAME_LOWERCASE
