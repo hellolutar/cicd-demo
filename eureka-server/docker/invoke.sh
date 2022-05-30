@@ -36,6 +36,7 @@ function dockerLogin() {
 
   if [ $(echo $?) -gt 0 ]; then
     echo "docker login SUCCESS"
+    return 0
   else
     echo "docker login FAILD"
     exit 1
@@ -50,6 +51,7 @@ function buildImage() {
 
   if [ $(echo $?) -eq 0 ]; then
     echo "build docker image SUCCESS"
+    return 0
   else
     echo "build docker image FAILD"
     exit 1
@@ -65,6 +67,7 @@ function pushImageToRepo() {
 
   if [ $(echo $?) -eq 0 ]; then
     echo "push image of docker to repo  SUCCESS"
+    return 0
   else
     echo "push image of docker to repo FAILD"
     exit 1
@@ -84,6 +87,7 @@ function runContainer() {
 
   if [ $(echo $?) -eq 0 ]; then
     echo "run image of docker to repo  SUCCESS"
+    return 0
   else
     echo "run image of docker to repo FAILD"
     exit 1
