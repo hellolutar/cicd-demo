@@ -60,7 +60,7 @@ function buildImage() {
 function pushImageToRepo() {
   DOCKER_IMAGE=$1
   echo "pushing image ..."
-  dockerLogin
+
   docker push $DOCKER_IMAGE
 
   if [ $(echo $?) -eq 0 ]; then
@@ -76,7 +76,7 @@ function pushImageToRepo() {
 function runContainer() {
   DOCKER_IMAGE=$1
   echo "pulling image ..."
-  dockerLogin
+
   docker pull $DOCKER_IMAGE
 
   echo "docker run image ..."
@@ -92,6 +92,7 @@ function runContainer() {
 
 function main() {
   generateDockerfile
+  dockerLogin
   buildImage $NAME-$VERSION
   pushImageToRepo $NAME-$VERSION
   runContainer $NAME-$VERSION
