@@ -64,3 +64,6 @@ function main() {
     pushImageToRepo $NAME-$VERSION
     runContainer $NAME-$VERSION
 }
+
+main
+
