@@ -13,7 +13,7 @@ VOLUME_MAPPING=$(cat commonEnv | grep ^VOLUME_MAPPING= | awk -F= '{print $2}')
 #停止容器
 function stopAndRmContainer() {
   KEY_WORD=$1
-  echo "remove image of docker "
+  echo "remove container of docker "
   CONTAINER_ID=$(docker ps -a | grep $KEY_WORD | awk '{print $1}')
   docker stop $CONTAINER_ID
   docker rm $CONTAINER_ID
