@@ -1,21 +1,22 @@
 pipeline {
     agent any
     stages {
-        stage('build_jar') {
+        stage('change dir') {
             steps {
                 sh '''cd eureka-server'''
             }
         }
 
-        stage('deploy_with_docker') {
+        stage('integrate') {
             steps {
                 sh '''
                  cd eureka-server
                  echo $pwd
                  bash jenkins/build.sh
-                 bash docker/invoke.sh'''
+                 bash docker/integrate.sh'''
             }
         }
+        
 
     }
 
@@ -24,7 +25,17 @@ pipeline {
             echo 'This will always run'
         }
         success {
-            echo 'This will run only if successful'
+            sshPublisher(
+                    publishers: [
+                            sshPublisherDesc(
+                                    configName: '99content-server', transfers:
+                                    [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/var/cicd-space/record-log/eureka-server/', remoteDirectorySDF: false, removePrefix: 'docker', sourceFiles: '**/commonEnv'),
+                                     sshTransfer(cleanRemote: false, excludes: '', execCommand: 'bash deploy.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/var/cicd-space/record-log/eureka-server/', remoteDirectorySDF: false, removePrefix: 'docker', sourceFiles: '**/deploy.sh'),
+                                     sshTransfer(cleanRemote: false, excludes: '', execCommand: 'rm -rf /var/cicd-space/record-log/eureka-server/*', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
+                                    ]
+                                    , usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)
+                    ]
+            )
         }
         failure {
             echo 'This will run only if failed'

@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+
+JAR_PORT=$(cat commonEnv | grep JAR_PORT= | awk -F= '{print $2}')
+DOCKER_REPO_URI=$(cat commonEnv | grep DOCKER_REPO_URI= | awk -F= '{print $2}')
+DOCKER_USERNAME=$(cat commonEnv | grep DOCKER_USERNAME= | awk -F= '{print $2}')
+DOCKER_PASSWD=$(cat commonEnv | grep DOCKER_PASSWD= | awk -F= '{print $2}')
+NAME=$(cat commonEnv | grep NAME= | awk -F= '{print $2}')
+VERSION=$(cat commonEnv | grep VERSION= | awk -F= '{print $2}')
+PORT_MAPPING=$(cat commonEnv | grep PORT_MAPPING= | awk -F= '{print $2}')
+VOLUME_MAPPING=$(cat commonEnv | grep VOLUME_MAPPING= | awk -F= '{print $2}')
+
 #停止容器
 function stopAndRmContainer() {
   KEY_WORD=$1
@@ -23,8 +33,8 @@ function runContainer() {
   docker pull $DOCKER_IMAGE
 
   echo "docker run image ..."
-  #todo 20220530 这里要做更改
-  docker run -d --name $NAME -p $PORT_MAPPING -v $VOLUME_MAPPING $DOCKER_IMAGE
+
+  docker run -d --name $2 -p $3 -v $4 $DOCKER_IMAGE
 
   if [ $(echo $?) -eq 0 ]; then
     echo "run image of docker to repo  SUCCESS"
@@ -38,7 +48,10 @@ function runContainer() {
 
 
 function main() {
-  stopAndRmContainer
+  IMAGE_NAME_LOWERCASE=$(echo "$DOCKER_REPO_URI/$NAME:$VERSION" | tr 'A-Z' 'a-z')
+  stopAndRmContainer $NAME
+  rmImage $IMAGE_NAME_LOWERCASE
+  runContainer $IMAGE_NAME_LOWERCASE $NAME $PORT_MAPPING $VOLUME_MAPPING
 }
 
 main
