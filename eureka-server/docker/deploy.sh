@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 
-JAR_PORT=$(cat commonEnv | grep JAR_PORT= | awk -F= '{print $2}')
-DOCKER_REPO_URI=$(cat commonEnv | grep DOCKER_REPO_URI= | awk -F= '{print $2}')
-DOCKER_USERNAME=$(cat commonEnv | grep DOCKER_USERNAME= | awk -F= '{print $2}')
-DOCKER_PASSWD=$(cat commonEnv | grep DOCKER_PASSWD= | awk -F= '{print $2}')
-NAME=$(cat commonEnv | grep NAME= | awk -F= '{print $2}')
-VERSION=$(cat commonEnv | grep VERSION= | awk -F= '{print $2}')
-PORT_MAPPING=$(cat commonEnv | grep PORT_MAPPING= | awk -F= '{print $2}')
-VOLUME_MAPPING=$(cat commonEnv | grep VOLUME_MAPPING= | awk -F= '{print $2}')
+JAR_PORT=$(cat commonEnv | grep ^JAR_PORT= | awk -F= '{print $2}')
+DOCKER_REPO_URI=$(cat commonEnv | grep ^DOCKER_REPO_URI= | awk -F= '{print $2}')
+DOCKER_USERNAME=$(cat commonEnv | grep ^DOCKER_USERNAME= | awk -F= '{print $2}')
+DOCKER_PASSWD=$(cat commonEnv | grep ^DOCKER_PASSWD= | awk -F= '{print $2}')
+NAME=$(cat commonEnv | grep ^NAME= | awk -F= '{print $2}')
+VERSION=$(cat commonEnv | grep ^VERSION= | awk -F= '{print $2}')
+PORT_MAPPING=$(cat commonEnv | grep ^PORT_MAPPING= | awk -F= '{print $2}')
+VOLUME_MAPPING=$(cat commonEnv | grep ^VOLUME_MAPPING= | awk -F= '{print $2}')
 
 #停止容器
 function stopAndRmContainer() {
